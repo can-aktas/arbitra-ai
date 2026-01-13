@@ -2,236 +2,557 @@
 <html lang="fr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Arbitra-ai – Optimisation intelligente des marges officinales</title>
-  <meta name="description" content="Arbitra aide les pharmacies d’officine à identifier, chiffrer et prioriser les leviers de marge et de volume grâce à l’IA et à l’analyse de données." />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Arbitra — Data & IA pour l’officine</title>
+  <meta name="description" content="Arbitra aide les officines à anticiper les ruptures et optimiser les achats via une approche data-driven (répartiteurs, historiques, modèles prédictifs, portefeuilles).">
 
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;600&family=Montserrat:wght@600;700&display=swap" rel="stylesheet" />
+  <!-- Typography (free Google Fonts) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400&family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
 
   <style>
-    :root {
-      /* Palette neutre + accent Arbitra (à ajuster si tu as des codes précis) */
-      --bg: #020617;
-      --bg-elevated: #020617;
-      --bg-soft: #0b1220;
-      --accent: #4f46e5;
-      --accent-soft: rgba(79, 70, 229, 0.12);
-      --accent-strong: #4338ca;
-      --text-main: #f9fafb;
-      --text-muted: #9ca3af;
-      --border-subtle: rgba(148, 163, 184, 0.25);
-      --positive: #22c55e;
+    :root{
+      --bg:#0b0f17;
+      --panel:#101827;
+      --card:#121c2e;
+      --text:#e8eefc;
+      --muted:#b8c3dd;
+      --line:rgba(255,255,255,.10);
+      --accent:#7aa2ff;
+      --accent2:#6ee7b7;
+      --shadow: 0 16px 40px rgba(0,0,0,.35);
 
-      /* Typo scale (desktop) */
-      --font-h1: 34px;
-      --font-h2: 24px;
-      --font-label: 13px;
-      --font-body: 15px;
-      --font-caption: 12px;
+      /* Typo scale requested */
+      --h1: 36px;     /* 32–36 */
+      --h2: 26px;     /* 22–26 */
+      --label: 13px;  /* 12–14 */
+      --body: 16px;   /* 14–16 */
+      --caption: 12.5px; /* 12–13 */
     }
 
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family: "Lato", ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Helvetica Neue", sans-serif;
+      font-size: var(--body);
+      color:var(--text);
+      background: radial-gradient(1100px 600px at 10% 10%, rgba(122,162,255,.22), transparent 60%),
+                  radial-gradient(900px 500px at 80% 20%, rgba(110,231,183,.18), transparent 55%),
+                  var(--bg);
+      line-height:1.55;
     }
 
-    body {
-      min-height: 100vh;
-      background:
-        radial-gradient(circle at top left, #111827 0, #020617 46%, #020617 100%);
-      color: var(--text-main);
-      font-family: "Lato", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      font-size: clamp(14px, 0.8vw + 12px, 16px);
-      line-height: 1.5;
-      -webkit-font-smoothing: antialiased;
+    a{color:inherit}
+    .container{max-width:1100px;margin:0 auto;padding:0 20px}
+
+    header{
+      padding:18px 0;
+      border-bottom:1px solid var(--line);
+      backdrop-filter: blur(6px);
+      position: sticky;
+      top:0;
+      z-index:10;
+      background: rgba(11,15,23,.65);
     }
 
-    h1, h2 {
-      font-family: "Montserrat", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      font-weight: 700;
+    .nav{display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .brand{display:flex;align-items:center;gap:10px;font-family:"Montserrat",sans-serif;font-weight:700;letter-spacing:.2px}
+    .logo{
+      width:34px;height:34px;border-radius:10px;
+      background: linear-gradient(135deg, rgba(122,162,255,.95), rgba(110,231,183,.90));
+      box-shadow: var(--shadow);
     }
 
-    h1 {
-      font-size: clamp(32px, 2.2vw + 18px, 36px); /* H1 : 32–36 px */
-      letter-spacing: -0.03em;
+    .navlinks{display:flex;gap:14px;flex-wrap:wrap}
+    .navlinks a{
+      opacity:.9;text-decoration:none;
+      font-family:"Montserrat",sans-serif;
+      font-weight:600;
+      font-size: var(--label);
+    }
+    .navlinks a:hover{opacity:1;text-decoration:underline}
+
+    .btn{
+      display:inline-flex;align-items:center;justify-content:center;
+      padding:10px 14px;border-radius:12px;
+      border:1px solid var(--line);
+      background: rgba(255,255,255,.06);
+      color:var(--text);text-decoration:none;
+      font-family:"Montserrat",sans-serif;
+      font-weight:600;
+      font-size: var(--label);
+    }
+    .btn.primary{
+      border-color: rgba(122,162,255,.45);
+      background: linear-gradient(135deg, rgba(122,162,255,.22), rgba(110,231,183,.10));
     }
 
-    h2 {
-      font-size: clamp(22px, 1.4vw + 14px, 26px); /* H2 : 22–26 px */
-      letter-spacing: -0.01em;
+    .hero{padding:54px 0 22px}
+    .hero-grid{display:grid;grid-template-columns: 1.2fr .8fr;gap:24px;align-items:start}
+    .kicker{display:inline-flex;gap:10px;flex-wrap:wrap;margin-bottom:14px}
+
+    .pill{
+      font-size: var(--label);
+      font-family:"Montserrat",sans-serif;
+      font-weight:600;
+      color:var(--muted);
+      padding:6px 10px;border:1px solid var(--line);
+      border-radius:999px;background:rgba(255,255,255,.04)
     }
 
-    .label {
-      font-family: "Montserrat", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      font-weight: 600; /* UI Label Montserrat 600 */
-      font-size: clamp(12px, 0.3vw + 11px, 14px);
-      text-transform: uppercase;
-      letter-spacing: 0.14em;
+    h1{
+      margin:0 0 12px;
+      font-family:"Montserrat",sans-serif;
+      font-weight:700;
+      font-size: var(--h1);
+      line-height:1.12;
     }
 
-    .caption {
-      font-family: "Lato", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      font-weight: 400;
-      font-size: clamp(12px, 0.2vw + 11px, 13px);
+    h2{
+      font-family:"Montserrat",sans-serif;
+      font-weight:700;
+      font-size: var(--h2);
+      margin:0 0 10px;
+      line-height:1.2;
     }
 
-    a {
-      color: inherit;
-      text-decoration: none;
+    .lead{color:var(--muted);margin:0 0 20px;max-width:58ch}
+    .cta{display:flex;gap:12px;flex-wrap:wrap;margin:18px 0 0}
+
+    .panel{
+      background: rgba(255,255,255,.04);
+      border:1px solid var(--line);
+      border-radius:18px;
+      padding:18px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.22);
     }
-
-    /* Layout */
-
-    .shell {
-      max-width: 1120px;
-      margin: 0 auto;
-      padding: 1.8rem 1.4rem 3.2rem;
-    }
-
-    header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 1.25rem;
-      margin-bottom: 2.4rem;
-    }
-
-    .brand {
-      display: flex;
-      align-items: center;
-      gap: 0.75rem;
-    }
-
-    .brand-mark {
-      width: 32px;
-      height: 32px;
-      border-radius: 12px;
-      background: radial-gradient(circle at 20% 0, #a5b4fc 0, #6366f1 32%, #312e81 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: "Montserrat", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      font-weight: 700;
+    .panel h3{
+      margin:0 0 10px;
+      font-family:"Montserrat",sans-serif;
+      font-weight:700;
       font-size: 16px;
     }
+    .panel p{margin:0;color:var(--muted);font-size: 14px}
 
-    .brand-name {
-      font-family: "Montserrat", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      font-weight: 700;
+    .section{padding:34px 0}
+    .sub{color:var(--muted);margin:0 0 18px}
+    .caption{color:var(--muted);font-size: var(--caption);margin-top:10px}
+
+    .partners{display:flex;gap:14px;flex-wrap:wrap}
+    .partner{
+      padding:10px 12px;border-radius:14px;border:1px solid var(--line);
+      background:rgba(255,255,255,.03);color:var(--muted);
+      font-family:"Montserrat",sans-serif;
+      font-weight:600;
+      font-size: var(--label);
+    }
+
+    .cards{display:grid;grid-template-columns: repeat(2, 1fr);gap:16px}
+    .card{
+      background: rgba(255,255,255,.04);
+      border:1px solid var(--line);
+      border-radius:18px;padding:18px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.18);
+    }
+    .card h3{
+      margin:0 0 6px;
+      font-family:"Montserrat",sans-serif;
+      font-weight:700;
+      font-size: 18px;
+    }
+    .pos{margin:0 0 14px;color:var(--muted);font-size:14px}
+
+    .grid3{display:grid;grid-template-columns: repeat(3, 1fr);gap:16px}
+    .mini{
+      border:1px solid var(--line);border-radius:16px;padding:14px;background:rgba(255,255,255,.03)
+    }
+    .mini h4{
+      margin:0 0 8px;
+      font-family:"Montserrat",sans-serif;
+      font-weight:700;
+      font-size: 14px;
+    }
+    .mini ul{margin:0;padding-left:18px;color:var(--muted);font-size: 14px}
+
+    .callout{
+      display:flex;align-items:flex-start;justify-content:space-between;gap:18px;flex-wrap:wrap;
+      background: linear-gradient(135deg, rgba(122,162,255,.14), rgba(110,231,183,.10));
+      border:1px solid rgba(255,255,255,.14);
+      border-radius:20px;padding:18px;
+    }
+    .callout strong{
+      font-family:"Montserrat",sans-serif;
+      font-weight:700;
       font-size: 16px;
-      letter-spacing: 0.12em;
-      text-transform: uppercase;
+    }
+    .callout p{margin:6px 0 0;color:var(--muted);max-width:70ch}
+
+    /* Traction section */
+    .metrics{
+      display:grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap:12px;
+      margin-top:14px;
+    }
+    .metric{
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:14px;
+      background:rgba(255,255,255,.03);
+    }
+    .metric .k{
+      font-family:"Montserrat",sans-serif;
+      font-weight:700;
+      font-size: 18px;
+      margin:0;
+    }
+    .metric .l{
+      font-family:"Montserrat",sans-serif;
+      font-weight:600;
+      font-size: var(--label);
+      color:var(--muted);
+      margin-top:6px;
     }
 
-    .badge {
-      padding: 0.24rem 0.6rem;
-      border-radius: 999px;
-      background: rgba(15, 23, 42, 0.9);
-      border: 1px solid rgba(148, 163, 184, 0.4);
-      color: var(--text-muted);
-      font-size: 11px;
+    .timeline{
+      margin-top:14px;
+      border:1px solid var(--line);
+      border-radius:18px;
+      background:rgba(255,255,255,.03);
+      overflow:hidden;
+    }
+    .trow{
+      display:grid;
+      grid-template-columns: 140px 1fr;
+      gap:14px;
+      padding:12px 14px;
+      border-top:1px solid var(--line);
+    }
+    .trow:first-child{border-top:none}
+    .tdate{
+      font-family:"Montserrat",sans-serif;
+      font-weight:700;
+      font-size: var(--label);
+      color:var(--text);
+      opacity:.95;
+    }
+    .tdesc{color:var(--muted);font-size: 14px}
+
+    /* Demo form */
+    input{
+      width:100%;
+      margin:8px 0 14px;
+      padding:10px;
+      border-radius:12px;
+      border:1px solid var(--line);
+      background:rgba(255,255,255,.03);
+      color:var(--text);
+      font-size: 14px;
+      font-family:"Lato",sans-serif;
+    }
+    label{
+      color:var(--muted);
+      font-family:"Montserrat",sans-serif;
+      font-weight:600;
+      font-size: var(--label);
     }
 
-    nav {
-      display: flex;
-      align-items: center;
-      gap: 1.4rem;
-      font-family: "Montserrat", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      font-weight: 600;
-      font-size: clamp(12px, 0.4vw + 10px, 14px);
-      color: var(--text-muted);
+    footer{padding:26px 0;border-top:1px solid var(--line);color:var(--muted);font-size:13px}
+    .footergrid{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+
+    @media (max-width: 980px){
+      .hero-grid{grid-template-columns:1fr}
+      .cards{grid-template-columns:1fr}
+      .grid3{grid-template-columns:1fr}
+      .metrics{grid-template-columns: repeat(2, 1fr)}
+      h1{font-size:34px}
+      h2{font-size:24px}
     }
-
-    nav a:hover {
-      color: var(--text-main);
+    @media (max-width: 520px){
+      .metrics{grid-template-columns: 1fr}
+      .trow{grid-template-columns: 1fr}
     }
+  </style>
+</head>
 
-    .nav-cta {
-      padding: 0.45rem 0.9rem;
-      border-radius: 999px;
-      border: 1px solid rgba(148, 163, 184, 0.4);
-      color: var(--text-main);
-    }
+<body>
+  <header>
+    <div class="container nav">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>Arbitra</div>
+      </div>
+      <div class="navlinks">
+        <a href="#problemes">Problématiques</a>
+        <a href="#traction">Traction</a>
+        <a href="#comment">Comment</a>
+        <a href="#demo">Démo</a>
+        <a href="#contact">Contact</a>
+      </div>
+      <a class="btn primary" href="#demo">Demander une démo</a>
+    </div>
+  </header>
 
-    main {
-      display: grid;
-      grid-template-columns: minmax(0, 3fr) minmax(0, 2.4fr);
-      gap: 2.8rem;
-      align-items: center;
-    }
+  <!-- HERO -->
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <div class="kicker">
+          <span class="pill">Data-driven</span>
+          <span class="pill">Officine</span>
+          <span class="pill">Ruptures & Achats</span>
+          <span class="pill">Aide à la décision</span>
+        </div>
+        <h1>Décider avant de subir.</h1>
+        <p class="lead">
+          Arbitra aide les officines à <strong>anticiper les ruptures</strong> et à <strong>optimiser les achats</strong>
+          via une approche portefeuille, fondée sur les historiques, les données répartiteurs et des modèles d’aide à la décision.
+        </p>
+        <div class="cta">
+          <a class="btn primary" href="#demo">Demander une démo</a>
+          <a class="btn" href="#problemes">Voir les cas d’usage</a>
+        </div>
+      </div>
 
-    @media (max-width: 860px) {
-      header {
-        flex-direction: column;
-        align-items: flex-start;
-      }
+      <div class="panel">
+        <h3>Ce que vous obtenez</h3>
+        <p>
+          • Une vision consolidée des risques de rupture<br/>
+          • Des alternatives proposées en amont<br/>
+          • Des portefeuilles d’achat optimisés (coût / volume / marge)<br/>
+          • Un pilotage mesurable et reproductible
+        </p>
+        <div class="caption">Arbitra est une démarche exploratoire : déploiement progressif selon vos contraintes.</div>
+      </div>
+    </div>
+  </section>
 
-      main {
-        grid-template-columns: 1fr;
-      }
-    }
+  <!-- PARTENAIRES -->
+  <section class="section">
+    <div class="container">
+      <h2>Écosystème & intégrations</h2>
+      <p class="sub">Connexion progressive à vos outils et sources de données (ex. répartiteurs). Les éléments ci-dessous sont des placeholders.</p>
+      <div class="partners">
+        <div class="partner">Répartiteurs (ex. MyAlliance)</div>
+        <div class="partner">LGO (à définir)</div>
+        <div class="partner">Groupements</div>
+        <div class="partner">Exports de données</div>
+      </div>
+    </div>
+  </section>
 
-    /* Hero */
+  <!-- PROBLÉMATIQUES -->
+  <section id="problemes" class="section">
+    <div class="container">
+      <h2>Deux problématiques, une même logique : objectiver et arbitrer</h2>
+      <p class="sub">Arbitra s’attaque à des irritants quotidiens avec des leviers actionnables et mesurables.</p>
 
-    .pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 0.45rem;
-      padding: 0.3rem 0.7rem;
-      border-radius: 999px;
-      background: rgba(15, 23, 42, 0.95);
-      border: 1px solid rgba(148, 163, 184, 0.4);
-      color: var(--text-muted);
-      margin-bottom: 1.1rem;
-    }
+      <div class="cards">
+        <!-- Problématique 1 -->
+        <div class="card">
+          <h3>Problématique 1 — Gestion proactive des ruptures</h3>
+          <p class="pos"><strong>Positionnement :</strong> Anticiper plutôt que subir.</p>
 
-    .pill-dot {
-      width: 7px;
-      height: 7px;
-      border-radius: 999px;
-      background: var(--positive);
-    }
+          <div class="grid3">
+            <div class="mini">
+              <h4>Besoin latent</h4>
+              <ul>
+                <li>Ruptures récurrentes sur certaines molécules</li>
+                <li>Peu d’anticipation basée sur l’historique réel</li>
+                <li>Données répartiteurs sous-exploitées</li>
+              </ul>
+            </div>
+            <div class="mini">
+              <h4>Pistes de solution</h4>
+              <ul>
+                <li>Exploitation des historiques multi-années</li>
+                <li>Analyse des données répartiteurs (ex. MyAlliance)</li>
+                <li>Modèle prédictif de risque de rupture</li>
+                <li>Recommandations d’alternatives en amont</li>
+              </ul>
+            </div>
+            <div class="mini">
+              <h4>Valeur</h4>
+              <ul>
+                <li>Continuité de service</li>
+                <li>Moins de pertes de chiffre d’affaires</li>
+                <li>Meilleure satisfaction patient</li>
+              </ul>
+            </div>
+          </div>
+        </div>
 
-    .pill-text {
-      font-family: "Montserrat", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      font-weight: 600;
-      font-size: 11px;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-    }
+        <!-- Problématique 2 -->
+        <div class="card">
+          <h3>Problématique 2 — Optimisation avancée des achats</h3>
+          <p class="pos"><strong>Positionnement :</strong> Passer de l’achat ligne par ligne à une logique portefeuille.</p>
 
-    .hero-title {
-      margin-bottom: 0.9rem;
-    }
+          <div class="grid3">
+            <div class="mini">
+              <h4>Besoin latent</h4>
+              <ul>
+                <li>Achats encore très intuitifs</li>
+                <li>Peu de vision globale sur les molécules à privilégier</li>
+                <li>Manque d’outils d’arbitrage coût / volume / historique</li>
+              </ul>
+            </div>
+            <div class="mini">
+              <h4>Pistes de solution</h4>
+              <ul>
+                <li>Construction automatique de portefeuilles d’achat par officine</li>
+                <li>Basé sur : historiques de ventes, conditions commerciales, objectifs de marge</li>
+                <li>Recommandations par lots de molécules plutôt qu’isolées</li>
+              </ul>
+            </div>
+            <div class="mini">
+              <h4>Valeur</h4>
+              <ul>
+                <li>Décisions rationnelles</li>
+                <li>Maximisation de la marge globale, pas marginale</li>
+                <li>Cohérence avec un modèle mathématique d’aide à la décision</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
 
-    .highlight {
-      color: #a5b4fc;
-    }
+      <div class="callout" style="margin-top:16px;">
+        <div>
+          <strong>Approche : données → modèle → recommandation → mesure</strong>
+          <p>
+            Arbitra transforme des données existantes (historiques, répartiteurs, conditions) en recommandations actionnables,
+            avec un modèle cohérent et des indicateurs de suivi.
+          </p>
+        </div>
+        <a class="btn primary" href="#demo">Demander une démo</a>
+      </div>
+    </div>
+  </section>
 
-    .hero-body {
-      max-width: 34rem;
-      color: var(--text-muted);
-      font-size: clamp(14px, 0.7vw + 12px, 16px); /* Body Lato 14–16 */
-      margin-bottom: 1.5rem;
-    }
+  <!-- TRACTION / AUDIT 2025 -->
+  <section id="traction" class="section">
+    <div class="container">
+      <h2>Traction & audit 2025</h2>
+      <p class="sub">
+        En 2025, une démarche d’audit data a permis d’objectiver le potentiel d’une approche portefeuille et d’éclairer la négociation commerciale
+        (analyse des conditions contractuelles, atteignabilité des paliers, simulations de scénarios).
+      </p>
 
-    .hero-body strong {
-      color: var(--text-main);
-      font-weight: 600;
-    }
+      <div class="metrics">
+        <div class="metric">
+          <p class="k">2025</p>
+          <div class="l">Période d’audit</div>
+        </div>
+        <div class="metric">
+          <p class="k">Multi-sources</p>
+          <div class="l">Données agrégées</div>
+        </div>
+        <div class="metric">
+          <p class="k">Simulations</p>
+          <div class="l">Scénarios d’achat</div>
+        </div>
+        <div class="metric">
+          <p class="k">Négociation</p>
+          <div class="l">Leviers identifiés</div>
+        </div>
+      </div>
 
-    .hero-cta-row {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.85rem;
-      align-items: center;
-      margin-bottom: 1.2rem;
-    }
+      <div class="timeline">
+        <div class="trow">
+          <div class="tdate">Oct. 2025</div>
+          <div class="tdesc">Agrégation et analyse des données d’adhérents, cartographie des besoins en molécules et simulations de pouvoir d’achat.</div>
+        </div>
+        <div class="trow">
+          <div class="tdate">Q4 2025</div>
+          <div class="tdesc">Analyse des conditions commerciales par laboratoire : atteignabilité des mécanismes (paliers), intérêt économique réel, recommandations d’ajustement.</div>
+        </div>
+        <div class="trow">
+          <div class="tdate">2026</div>
+          <div class="tdesc">Repositionnement vers deux cas d’usage prioritaires : anticipation des ruptures et optimisation avancée des achats via logique portefeuille.</div>
+        </div>
+      </div>
 
-    .btn {
-      font-family: "Montserrat", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      font-we
+      <p class="caption">
+        Note : cette section est volontairement “haut niveau” (investisseurs / partenaires). Les détails peuvent être partagés en échange privé.
+      </p>
+    </div>
+  </section>
+
+  <!-- COMMENT ÇA MARCHE -->
+  <section id="comment" class="section">
+    <div class="container">
+      <h2>Comment ça marche</h2>
+      <p class="sub">Une mise en route progressive, pensée pour s’intégrer à la réalité officinale.</p>
+
+      <div class="grid3">
+        <div class="mini">
+          <h4>1) Connexion & collecte</h4>
+          <ul>
+            <li>Import des historiques (multi-années)</li>
+            <li>Flux répartiteurs (selon disponibilité)</li>
+            <li>Paramètres métier : objectifs, priorités</li>
+          </ul>
+        </div>
+        <div class="mini">
+          <h4>2) Modélisation</h4>
+          <ul>
+            <li>Score de risque de rupture</li>
+            <li>Arbitrage coût / volume / marge</li>
+            <li>Contraintes et cohérence portefeuille</li>
+          </ul>
+        </div>
+        <div class="mini">
+          <h4>3) Recommandations</h4>
+          <ul>
+            <li>Alternatives proposées en amont</li>
+            <li>Portefeuilles d’achat optimisés</li>
+            <li>Suivi de performance et ajustements</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- DEMO -->
+  <section id="demo" class="section">
+    <div class="container">
+      <h2>Demander une démonstration</h2>
+      <p class="sub">Laissez vos coordonnées : nous revenons vers vous pour une démo personnalisée.</p>
+
+      <div class="panel" style="max-width:680px;">
+        <form>
+          <label>Nom et prénom</label>
+          <input type="text" placeholder="Votre nom" />
+
+          <label>Email</label>
+          <input type="email" placeholder="vous@exemple.com" />
+
+          <label>Téléphone</label>
+          <input type="tel" placeholder="06..." />
+
+          <button class="btn primary" type="button" onclick="alert('Formulaire statique : connecte-le plus tard à Google Forms / Tally / Typeform.');">
+            Demander une démonstration
+          </button>
+
+          <p class="caption">
+            Formulaire statique (gratuit) : on peut le connecter ensuite à Google Forms/Tally pour recevoir les demandes.
+          </p>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <footer id="contact">
+    <div class="container footergrid">
+      <div>
+        <strong style="font-family:Montserrat,sans-serif;">Arbitra</strong><br/>
+        <span class="muted">Data & IA pour l’officine : ruptures & achats.</span>
+      </div>
+      <div>
+        Contact : <a href="mailto:contact@arbitra-ai.com">contact@arbitra-ai.com</a>
+      </div>
+    </div>
+  </footer>
+</body>
+</html>
